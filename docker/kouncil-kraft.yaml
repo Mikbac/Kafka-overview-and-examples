@@ -1,11 +1,12 @@
 #
 # Created by MikBac on 11.12.2022
 #
-version: "1"
+version: "3.2"
 services:
   kafka-bitnami:
     image: 'bitnami/kafka:3.3.1'
     hostname: bitnami-kafka
+    restart: unless-stopped
     ports:
       - '9092:9092'
     environment:
@@ -22,6 +23,7 @@ services:
       - kafka-network
   kouncil-ui:
     image: 'consdata/kouncil:1.4'
+    restart: unless-stopped
     ports:
       - '9080:8080'
     environment:

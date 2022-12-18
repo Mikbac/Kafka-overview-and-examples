@@ -55,9 +55,9 @@ services:
       - "traefik.http.routers.kouncil_ui.middlewares=kouncil_ui_strip, kouncil_ui_rewrite"
       - "traefik.http.middlewares.kouncil_ui_strip.stripprefix.prefixes=/kouncil-ui"
       - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[0].regex=<base href=\"/\">"
-      - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[0].replacement=<base href=\".\">"
+      - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[0].replacement=<base href=\"/kouncil-ui/\">"
       - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[1].regex=/api/"
-      - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[1].replacement=./api/"
+      - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[1].replacement=/kouncil-ui/api/"
     networks:
       - kafka-network
     depends_on:

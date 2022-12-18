@@ -23,6 +23,8 @@ or
   --bootstrap-server localhost:9092
 ```
 
+-------------------------------------------------------------------
+
 ## Produce Log/Message
 
 ```shell
@@ -31,6 +33,20 @@ or
     --topic quickstart-events
 ```
 
+With key:
+
+```shell
+./kafka-console-producer.bat \
+  --broker-list localhost:9092 \
+  --topic quickstart-events \
+  --property "key.separator=-" \
+  --property "parse.key=true"
+```
+
+Input e.g. `<KEY>-<VALUE>`
+
+-------------------------------------------------------------------
+
 ## Consume Log/Message
 
 ```shell
@@ -38,4 +54,40 @@ or
   --bootstrap-server localhost:9092 \
   --topic quickstart-events \
   --from-beginning
+```
+
+With key:
+
+```shell
+./kafka-console-consumer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic quickstart-events \
+  --from-beginning \
+  --property "key.separator=-" \
+  --property "print.key=true"
+```
+
+With Consumer Group:
+
+```shell
+./kafka-console-consumer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic quickstart-events \
+  --group <group-name>
+```
+
+-------------------------------------------------------------------
+
+## List the topics in a cluster
+
+```shell
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
+```
+
+-------------------------------------------------------------------
+
+## List the consumer groups
+
+```shell
+./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
 ```

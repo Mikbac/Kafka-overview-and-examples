@@ -6,7 +6,7 @@
 # and will be changed when the proxy starts working properly in Kouncil
 # ---------------------------------------------------------------------------------------------------------
 #
-version: "3.2"
+version: "3.4"
 services:
   kafka-bitnami:
     image: 'bitnami/kafka:3.3.1'

@@ -9,6 +9,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class KafkaConstants {
 
-    public final String KAFKA_LIBRARY_TOPIC = "library-books";
+    public static final String KAFKA_LIBRARY_TOPIC = "library-books";
 
 }

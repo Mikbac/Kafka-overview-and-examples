@@ -10,7 +10,7 @@
 ```shell
 ./kafka-topics.sh --create \
   --topic quickstart-events \
-  --bootstrap-server localhost:9092
+  --bootstrap-server localhost:9192
 ```
 
 or
@@ -20,7 +20,7 @@ or
   --topic quickstart-events \
   --replication-factor 1 \
   --partitions 3 \
-  --bootstrap-server localhost:9092
+  --bootstrap-server localhost:9192
 ```
 
 -------------------------------------------------------------------
@@ -29,7 +29,7 @@ or
 
 ```shell
 ./kafka-console-producer.sh \
-    --broker-list localhost:9092 \
+    --broker-list localhost:9192 \
     --topic quickstart-events
 ```
 
@@ -37,7 +37,7 @@ With key:
 
 ```shell
 ./kafka-console-producer.bat \
-  --broker-list localhost:9092 \
+  --broker-list localhost:9192 \
   --topic quickstart-events \
   --property "key.separator=-" \
   --property "parse.key=true"
@@ -51,7 +51,7 @@ Input e.g. `<KEY>-<VALUE>`
 
 ```shell
 ./kafka-console-consumer.sh \
-  --bootstrap-server localhost:9092 \
+  --bootstrap-server localhost:9192 \
   --topic quickstart-events \
   --from-beginning
 ```
@@ -60,7 +60,7 @@ With key:
 
 ```shell
 ./kafka-console-consumer.sh \
-  --bootstrap-server localhost:9092 \
+  --bootstrap-server localhost:9192 \
   --topic quickstart-events \
   --from-beginning \
   --property "key.separator=-" \
@@ -71,7 +71,7 @@ With Consumer Group:
 
 ```shell
 ./kafka-console-consumer.sh \
-  --bootstrap-server localhost:9092 \
+  --bootstrap-server localhost:9192 \
   --topic quickstart-events \
   --group <group-name>
 ```
@@ -81,7 +81,7 @@ With Consumer Group:
 ## List the topics in a cluster
 
 ```shell
-./kafka-topics.sh --bootstrap-server localhost:9092 --list
+./kafka-topics.sh --bootstrap-server localhost:9192 --list
 ```
 
 -------------------------------------------------------------------
@@ -89,5 +89,5 @@ With Consumer Group:
 ## List the consumer groups
 
 ```shell
-./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+./kafka-consumer-groups.sh --bootstrap-server localhost:9192 --list
 ```

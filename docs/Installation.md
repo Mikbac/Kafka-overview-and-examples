@@ -6,7 +6,7 @@
 
 https://hub.docker.com/r/bitnami/kafka
 
-**Run (without UI):**
+**1. Run (without UI):**
 
 ```shell
 docker compose -f ./docker/kraft.yaml up
@@ -14,9 +14,9 @@ docker compose -f ./docker/kraft.yaml up
 
 | Service      | Endpoint              |
 |--------------|-----------------------|
-| Kafka broker | http://localhost:9092 |
+| Kafka broker | http://localhost:9192 |
 
-**Run (with UI):**
+**2. Run (with UI):**
 
 ```shell
 docker compose -f ./docker/kouncil-kraft.yaml up
@@ -24,10 +24,24 @@ docker compose -f ./docker/kouncil-kraft.yaml up
 
 | Service      | Endpoint              |
 |--------------|-----------------------|
-| Kafka broker | http://localhost:9092 |
+| Kafka broker | http://localhost:9192 |
 | Kouncil UI   | http://localhost:9080 |
 
-**Run (with UI via proxy):**
+
+**3. Run (with UI and three brokers):**
+
+```shell
+docker compose -f ./docker/kouncil-kraft-multiple.yaml up
+```
+
+| Service        | Endpoint              |
+|----------------|-----------------------|
+| Kafka broker-1 | http://localhost:9192 |
+| Kafka broker-2 | http://localhost:9293 |
+| Kafka broker-3 | http://localhost:9394 |
+| Kouncil UI     | http://localhost:9080 |
+
+**4. Run (with UI via proxy):**
 
 ```shell
 docker compose -f ./docker/kouncil-kraft-traefik.yaml up
@@ -35,7 +49,7 @@ docker compose -f ./docker/kouncil-kraft-traefik.yaml up
 
 | Service           | Endpoint                           |
 |-------------------|------------------------------------|
-| Kafka broker      | http://localhost:9092              |
+| Kafka broker      | http://localhost:9192              |
 | Traefik Dashboard | http://localhost:9081/dashboard/#/ |
 | Kouncil UI        | http://localhost:9082/kouncil-ui/  |
 
@@ -85,7 +99,7 @@ docker compose -f ./docker/kouncil-kraft-traefik.yaml up
 5. Run Zookeeper `./zookeeper-server-start.sh ../config/zookeeper.properties`
 6. Add properties to `server.properties`:
    ```properties
-   listeners=PLAINTEXT://localhost:9092
+   listeners=PLAINTEXT://localhost:9192
    # When you try to send a message to a topic that doesn't exist, then automatically create a topic
    auto.create.topics.enable=false
    ```

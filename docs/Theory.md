@@ -66,3 +66,9 @@ Consumer Groups are used for scalable message consumption.
 Each different application will have a unique consumer group.
 
 ![Kafka Consumer Groups from dilipsundarraj1](./img/Kafka_Consumers_Group_dilipsundarraj1.png "Kafka Consumer Groups")
+
+## Retention Policy
+
+Determines how long the message is retained.
+Configured using the property `log.retention.hours` in `server.properties` file.
+Default retention period is 168 hours (7 days).

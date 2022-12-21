@@ -19,7 +19,7 @@ docker compose -f ./docker/kraft.yaml up
 **2. Run (with UI):**
 
 ```shell
-docker compose -f ./docker/kouncil-kraft.yaml up
+docker compose -f ./docker/kraft-kouncil.yaml up
 ```
 
 | Service      | Endpoint              |
@@ -31,7 +31,7 @@ docker compose -f ./docker/kouncil-kraft.yaml up
 **3. Run (with UI and three brokers):**
 
 ```shell
-docker compose -f ./docker/kouncil-kraft-multiple.yaml up
+docker compose -f ./docker/kraft-kouncil-cluster.yaml up
 ```
 
 | Service        | Endpoint              |
@@ -44,7 +44,7 @@ docker compose -f ./docker/kouncil-kraft-multiple.yaml up
 **4. Run (with UI via proxy):**
 
 ```shell
-docker compose -f ./docker/kouncil-kraft-traefik.yaml up
+docker compose -f ./docker/kraft-kouncil-traefik.yaml up
 ```
 
 | Service           | Endpoint                           |

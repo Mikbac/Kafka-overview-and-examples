@@ -72,3 +72,47 @@ Each different application will have a unique consumer group.
 Determines how long the message is retained.
 Configured using the property `log.retention.hours` in `server.properties` file.
 Default retention period is 168 hours (7 days).
+
+## Distributed streaming platform
+
+Distributed systems are a collection of systems working together to
+deliver a value.
+
+Characteristics of Distributed System:
+
+* Availability and Fault Tolerance
+* Reliable Work Distribution
+* Easily Scalable
+* Handling Concurrency is fairly easy
+
+Characteristics of Kafka as a Distributed System:
+
+* Client requests are distributed between brokers
+* Easy to scale by adding more brokers based on the need
+* Handles data loss using Replication
+
+## Replication
+
+**Replication should be equal or less than the number of brokers that you have in the Kafka cluster**
+
+![Kafka replication from JACK VANLIGHTLY](./img/Kafka_Partition_Fail_Over_Jack_Vanlightly.png "Kafka Replication from https://jack-vanlightly.com/blog/2018/9/2/rabbitmq-vs-kafka-part-6-fault-tolerance-and-high-availability-with-kafka")
+
+When **Broker 1** is broken the new leader of partition 1 is a new broker e.g. **Broker 2**.
+
+Check replication:
+
+```shell
+# Zookeeper
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic <topic-name>
+# Kraft
+./kafka-topics.sh --zookeeper localhost:2181 --describe --topic <topic-name>
+```
+
+## In-Sync Replica(ISR)
+
+* Represents the number of replica in sync with each other in the cluster
+* Includes both leader and follower replica
+* Recommended value is always greater than 1
+* Ideal value is ISR == Replication Factor
+* This can be controlled by min.insync.replicas property
+* It can be set at the broker or topic level

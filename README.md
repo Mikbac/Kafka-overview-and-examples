@@ -1,7 +1,10 @@
 # Kafka demo
 
 ## [Theory](./docs/Theory.md)
+
 ## [Installation](./docs/Installation.md)
+
+## [Cluster](./docs/Cluster.md)
 
 -------------------------------------------------------------------
 

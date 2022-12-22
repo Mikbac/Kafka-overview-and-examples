@@ -3,9 +3,17 @@ package com.example.libraryproducer.service;
 import com.example.libraryproducer.model.LibraryEventModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import static com.example.libraryproducer.service.KafkaEventUtil.buildProducerRecord;
 
 /**
  * Created by MikBac on 19.12.2022
@@ -16,12 +24,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LibraryEventProducerService {
 
-    private final KafkaTemplate<Integer, LibraryEventModel> kafkaTemplate;
+    private static final String CUSTOM_TOPIC = "CustomTopic_library-events";
 
-    public void sendLibraryEvent(final LibraryEventModel libraryEvent) {
+    private final KafkaTemplate<String, LibraryEventModel> kafkaTemplate;
 
-        final Integer key = libraryEvent.getLibraryEventId();
+    public void sendDefaultKeyAsyncLibraryEvent(final LibraryEventModel libraryEvent) {
 
+        final String key = UUID.randomUUID().toString();
+
+        // Uses default topic from configuration
         kafkaTemplate.sendDefault(key, libraryEvent).whenComplete((result, exception) -> {
             if (exception == null) {
                 handleSuccess(key, libraryEvent, result);
@@ -32,13 +43,56 @@ public class LibraryEventProducerService {
 
     }
 
+    public void sendCustomKeyAsyncLibraryEvent(final LibraryEventModel libraryEvent) {
+
+        final String key = UUID.randomUUID().toString();
+
+        kafkaTemplate.send("CustomTopic_library-events", key, libraryEvent).whenComplete((result, exception) -> {
+            if (exception == null) {
+                handleSuccess(key, libraryEvent, result);
+            } else {
+                handleFailure(exception);
+            }
+        });
+
+    }
+
+    public void sendCustomKeyAsyncWithProducerRecord(final LibraryEventModel libraryEvent) {
+
+        final String key = UUID.randomUUID().toString();
+
+        ProducerRecord<String, LibraryEventModel> event =  buildProducerRecord(key, libraryEvent, CUSTOM_TOPIC);
+
+        kafkaTemplate.send(event).whenComplete((result, exception) -> {
+            if (exception == null) {
+                handleSuccess(key, libraryEvent, result);
+            } else {
+                handleFailure(exception);
+            }
+        });
+
+    }
+
+    public SendResult<String, LibraryEventModel> sendSyncLibraryEvent(final LibraryEventModel libraryEvent) {
+
+        final String key = UUID.randomUUID().toString();
+
+        try {
+            return kafkaTemplate.sendDefault(key, libraryEvent).get(10, TimeUnit.SECONDS);
+        } catch (final InterruptedException | ExecutionException | TimeoutException e) {
+            handleFailure(e);
+        }
+
+        return null;
+    }
+
     private void handleFailure(final Throwable throwable) {
         log.error("Error Sending the Message and the exception is {}", throwable.getMessage());
     }
 
-    private void handleSuccess(final Integer key,
+    private void handleSuccess(final String key,
                                final LibraryEventModel value,
-                               final SendResult<Integer, LibraryEventModel> result) {
+                               final SendResult<String, LibraryEventModel> result) {
         log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}",
                 key,
                 value,

@@ -20,7 +20,7 @@ public class KafkaConfiguration {
     public NewTopic libraryEvents() {
         return TopicBuilder.name(KAFKA_LIBRARY_TOPIC)
                 .partitions(4)
-                .replicas(1)
+                .replicas(3)
                 .build();
     }
 

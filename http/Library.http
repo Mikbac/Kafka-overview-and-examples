@@ -1,6 +1,4 @@
-# Library Producer
-
-```http request
+###
 POST http://localhost:8080/v1/async/books
 Content-Type: application/json
 
@@ -8,41 +6,39 @@ Content-Type: application/json
   "libraryEventId": 1,
   "book": {
     "bookId": 456,
-    "bookName": "Kafka Using Spring Boot",
-    "bookAuthor": "Dilip"
+    "bookName": "Kafka Book2",
+    "bookAuthor": "Author Name"
   }
 }
-```
 
-```http request
-POST http://localhost:8080/v2/async/book
+###
+POST http://localhost:8080/v2/async/books
 Content-Type: application/json
 
 {
   "libraryEventId": 1,
   "book": {
     "bookId": 456,
-    "bookName": "Kafka Using Spring Boot",
-    "bookAuthor": "Dilip"
+    "bookName": "Kafka Book2",
+    "bookAuthor": "Author Name"
   }
 }
-```
 
-```http request
-POST http://localhost:8080/v3/async/book
+###
+POST http://localhost:8080/v3/async/books
 Content-Type: application/json
 
 {
   "libraryEventId": 1,
   "book": {
     "bookId": 456,
-    "bookName": "Kafka Using Spring Boot",
-    "bookAuthor": "Dilip"
+    "bookName": "Kafka Book2",
+    "bookAuthor": "Author Name"
   }
 }
-```
 
-```http request
+###
+
 POST http://localhost:8080/v1/sync/books
 Content-Type: application/json
 
@@ -50,8 +46,8 @@ Content-Type: application/json
   "libraryEventId": 1,
   "book": {
     "bookId": 456,
-    "bookName": "Kafka Using Spring Boot",
-    "bookAuthor": "Dilip"
+    "bookName": "Kafka Book",
+    "bookAuthor": "Author Name"
   }
 }
-```
+

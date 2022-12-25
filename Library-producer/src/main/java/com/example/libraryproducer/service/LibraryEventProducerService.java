@@ -47,7 +47,7 @@ public class LibraryEventProducerService {
 
         final String key = UUID.randomUUID().toString();
 
-        kafkaTemplate.send("CustomTopic_library-events", key, libraryEvent).whenComplete((result, exception) -> {
+        kafkaTemplate.send(CUSTOM_TOPIC, key, libraryEvent).whenComplete((result, exception) -> {
             if (exception == null) {
                 handleSuccess(key, libraryEvent, result);
             } else {

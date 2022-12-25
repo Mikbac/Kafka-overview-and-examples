@@ -3,7 +3,7 @@ POST http://localhost:8080/v1/async/books
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
@@ -16,7 +16,7 @@ POST http://localhost:8080/v2/async/books
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
@@ -29,7 +29,7 @@ POST http://localhost:8080/v3/async/books
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
@@ -43,7 +43,7 @@ POST http://localhost:8080/v1/sync/books
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book",
@@ -51,3 +51,16 @@ Content-Type: application/json
   }
 }
 
+###
+
+PUT http://localhost:8080/v1/async/books
+Content-Type: application/json
+
+{
+  "libraryEventId": "1111-222-333",
+  "book": {
+    "bookId": 456,
+    "bookName": "Kafka Book2",
+    "bookAuthor": "Author Name"
+  }
+}

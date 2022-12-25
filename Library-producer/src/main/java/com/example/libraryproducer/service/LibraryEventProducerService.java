@@ -29,9 +29,9 @@ public class LibraryEventProducerService {
 
     private final KafkaTemplate<String, LibraryEventModel> kafkaTemplate;
 
-    public void sendDefaultKeyAsyncLibraryEvent(final LibraryEventModel libraryEvent) {
+    public void sendDefaultKeyAsyncLibraryEvent(final LibraryEventModel libraryEvent, final String libraryEventId) {
 
-        final String key = UUID.randomUUID().toString();
+        final String key = libraryEventId != null ? libraryEventId : UUID.randomUUID().toString();
 
         // Uses default topic from configuration
         kafkaTemplate.sendDefault(key, libraryEvent).whenComplete((result, exception) -> {

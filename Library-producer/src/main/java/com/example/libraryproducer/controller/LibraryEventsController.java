@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class LibraryEventsController {
     public ResponseEntity<LibraryEventModel> postAsyncDefaultLibraryEvent(@RequestBody @Valid final LibraryEventModel libraryEvent) {
 
         libraryEvent.setLibraryEventType(LibraryEventType.NEW);
-        libraryEventProducer.sendDefaultKeyAsyncLibraryEvent(libraryEvent);
+        libraryEventProducer.sendDefaultKeyAsyncLibraryEvent(libraryEvent, null);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(libraryEvent);
@@ -62,6 +63,20 @@ public class LibraryEventsController {
         log.info("SendResult is {}", sendResult.toString());
 
         return ResponseEntity.status(HttpStatus.CREATED)
+                .body(libraryEvent);
+    }
+
+    @PutMapping("/v1/async/books")
+    public ResponseEntity<?> putAsyncDefaultLibraryEvent(@RequestBody @Valid final LibraryEventModel libraryEvent) {
+
+        if(libraryEvent.getLibraryEventId()==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the LibraryEventId");
+        }
+
+        libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
+        libraryEventProducer.sendDefaultKeyAsyncLibraryEvent(libraryEvent, libraryEvent.getLibraryEventId());
+
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(libraryEvent);
     }
 

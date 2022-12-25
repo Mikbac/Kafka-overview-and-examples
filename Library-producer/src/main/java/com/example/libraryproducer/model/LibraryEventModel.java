@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LibraryEventModel {
 
-    private Integer libraryEventId;
+    private String libraryEventId;
     private LibraryEventType libraryEventType;
     @NotNull
     @Valid

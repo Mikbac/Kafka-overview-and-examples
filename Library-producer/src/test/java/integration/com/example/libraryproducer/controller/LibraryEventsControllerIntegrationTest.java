@@ -2,6 +2,7 @@ package com.example.libraryproducer.controller;
 
 import com.example.libraryproducer.model.BookModel;
 import com.example.libraryproducer.model.LibraryEventModel;
+import com.example.libraryproducer.model.LibraryEventType;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -67,7 +68,7 @@ class LibraryEventsControllerIntegrationTest {
     }
 
     @Test
-    @Timeout(10)
+    @Timeout(5)
     void postAsyncDefaultLibraryEvent() throws InterruptedException {
         // given
         final BookModel book = BookModel.builder()
@@ -100,10 +101,45 @@ class LibraryEventsControllerIntegrationTest {
 
         consumerRecords.forEach(cr -> {
             final LibraryEventModel value = cr.value();
-            System.out.println(value.toString());
             assertEquals(book.getBookAuthor(), value.getBook().getBookAuthor());
             assertEquals(book.getBookId(), value.getBook().getBookId());
         });
+
+    }
+
+    @Test
+    @Timeout(5)
+    void putLibraryEvent() {
+        // given
+        final BookModel book = BookModel.builder()
+                .bookId(111)
+                .bookAuthor("Bob")
+                .bookName("Kafka")
+                .build();
+
+        final LibraryEventModel sentLibraryEvent = LibraryEventModel.builder()
+                .libraryEventId("111-222-333")
+                .book(book)
+                .build();
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set("content-type", MediaType.APPLICATION_JSON.toString());
+        final HttpEntity<LibraryEventModel> request = new HttpEntity<>(sentLibraryEvent, headers);
+
+        //when
+        ResponseEntity<LibraryEventModel> responseEntity = restTemplate.exchange("/v1/async/books", HttpMethod.PUT, request, LibraryEventModel.class);
+
+        //then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
+
+        final LibraryEventModel receivedLibraryEvent = LibraryEventModel.builder()
+                .libraryEventId("111-222-333")
+                .libraryEventType(LibraryEventType.UPDATE)
+                .book(book)
+                .build();
+
+        consumerRecords.forEach(cr -> assertEquals(receivedLibraryEvent, cr.value()));
 
     }
 

@@ -9,6 +9,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -57,13 +58,15 @@ public class LibraryEventProducerService {
 
     }
 
-    public void sendCustomKeyAsyncWithProducerRecord(final LibraryEventModel libraryEvent) {
+    public CompletableFuture<SendResult<String, LibraryEventModel>> sendCustomKeyAsyncWithProducerRecord(final LibraryEventModel libraryEvent) {
 
         final String key = UUID.randomUUID().toString();
 
-        ProducerRecord<String, LibraryEventModel> event =  buildProducerRecord(key, libraryEvent, CUSTOM_TOPIC);
+        final ProducerRecord<String, LibraryEventModel> event = buildProducerRecord(key, libraryEvent, CUSTOM_TOPIC);
 
-        kafkaTemplate.send(event).whenComplete((result, exception) -> {
+        final CompletableFuture<SendResult<String, LibraryEventModel>> completableFuture = kafkaTemplate.send(event);
+
+        completableFuture.whenComplete((result, exception) -> {
             if (exception == null) {
                 handleSuccess(key, libraryEvent, result);
             } else {
@@ -71,6 +74,7 @@ public class LibraryEventProducerService {
             }
         });
 
+        return completableFuture;
     }
 
     public SendResult<String, LibraryEventModel> sendSyncLibraryEvent(final LibraryEventModel libraryEvent) {
@@ -88,6 +92,13 @@ public class LibraryEventProducerService {
 
     private void handleFailure(final Throwable throwable) {
         log.error("Error Sending the Message and the exception is {}", throwable.getMessage());
+
+        try {
+            throw throwable;
+        } catch (final Throwable e) {
+            log.error("Error in OnFailure: {}", throwable.getMessage());
+        }
+
     }
 
     private void handleSuccess(final String key,

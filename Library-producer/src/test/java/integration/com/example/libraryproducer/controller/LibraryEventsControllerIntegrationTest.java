@@ -55,7 +55,7 @@ class LibraryEventsControllerIntegrationTest {
         final JsonDeserializer<LibraryEventModel> deserializer = new JsonDeserializer<>(LibraryEventModel.class);
         deserializer.addTrustedPackages("com.example.libraryproducer.model");
 
-        Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("group1", "true", embeddedKafkaBroker));
+        final Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("group1", "true", embeddedKafkaBroker));
         configs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         consumer = new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(), deserializer).createConsumer();
         embeddedKafkaBroker.consumeFromAllEmbeddedTopics(consumer);
@@ -70,22 +70,22 @@ class LibraryEventsControllerIntegrationTest {
     @Timeout(10)
     void postAsyncDefaultLibraryEvent() throws InterruptedException {
         // given
-        BookModel book = BookModel.builder()
+        final BookModel book = BookModel.builder()
                 .bookId(111)
                 .bookAuthor("Bob")
                 .bookName("Kafka")
                 .build();
 
-        LibraryEventModel libraryEvent = LibraryEventModel.builder()
+        final LibraryEventModel libraryEvent = LibraryEventModel.builder()
                 .libraryEventId(null)
                 .book(book)
                 .build();
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("content-type", MediaType.APPLICATION_JSON.toString());
-        HttpEntity<LibraryEventModel> request = new HttpEntity<>(libraryEvent, headers);
+        final HttpEntity<LibraryEventModel> request = new HttpEntity<>(libraryEvent, headers);
 
         // when
-        ResponseEntity<LibraryEventModel> responseEntity = restTemplate.exchange(
+        final ResponseEntity<LibraryEventModel> responseEntity = restTemplate.exchange(
                 "/v1/async/books",
                 HttpMethod.POST,
                 request,
@@ -94,7 +94,7 @@ class LibraryEventsControllerIntegrationTest {
         // then
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
-        ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
+        final ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
 
         assert consumerRecords.count() == 1;
 

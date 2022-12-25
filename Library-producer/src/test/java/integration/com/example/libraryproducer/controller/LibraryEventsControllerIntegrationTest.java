@@ -25,7 +25,6 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.HashMap;
@@ -39,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(topics = {"library-books"}, partitions = 3, value = 3)
-@ActiveProfiles(profiles = "local")
 @TestPropertySource(properties = {"spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}"})
 class LibraryEventsControllerIntegrationTest {
 
@@ -64,12 +62,13 @@ class LibraryEventsControllerIntegrationTest {
 
     @AfterEach
     void tearDown() {
+        embeddedKafkaBroker.getTopics().clear();
         consumer.close();
     }
 
     @Test
     @Timeout(5)
-    void postAsyncDefaultLibraryEvent() throws InterruptedException {
+    void postAsyncDefaultLibraryEvent() {
         // given
         final BookModel book = BookModel.builder()
                 .bookId(111)
@@ -96,8 +95,6 @@ class LibraryEventsControllerIntegrationTest {
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
         final ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
-
-        assert consumerRecords.count() == 1;
 
         consumerRecords.forEach(cr -> {
             final LibraryEventModel value = cr.value();
@@ -126,12 +123,12 @@ class LibraryEventsControllerIntegrationTest {
         final HttpEntity<LibraryEventModel> request = new HttpEntity<>(sentLibraryEvent, headers);
 
         //when
-        ResponseEntity<LibraryEventModel> responseEntity = restTemplate.exchange("/v1/async/books", HttpMethod.PUT, request, LibraryEventModel.class);
+        final ResponseEntity<LibraryEventModel> responseEntity = restTemplate.exchange("/v1/async/books", HttpMethod.PUT, request, LibraryEventModel.class);
 
         //then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
+        final ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
 
         final LibraryEventModel receivedLibraryEvent = LibraryEventModel.builder()
                 .libraryEventId("111-222-333")

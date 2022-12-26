@@ -9,6 +9,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.HashMap;
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(topics = {"library-books"}, partitions = 3, value = 3)
 @TestPropertySource(properties = {"spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}"})
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class LibraryEventsControllerIntegrationTest {
 
     @Autowired
@@ -62,12 +65,12 @@ class LibraryEventsControllerIntegrationTest {
 
     @AfterEach
     void tearDown() {
-        embeddedKafkaBroker.getTopics().clear();
         consumer.close();
     }
 
     @Test
     @Timeout(5)
+    @Order(1)
     void postAsyncDefaultLibraryEvent() {
         // given
         final BookModel book = BookModel.builder()
@@ -106,6 +109,7 @@ class LibraryEventsControllerIntegrationTest {
 
     @Test
     @Timeout(5)
+    @Order(2)
     void putLibraryEvent() {
         // given
         final BookModel book = BookModel.builder()

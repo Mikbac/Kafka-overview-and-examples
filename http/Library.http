@@ -7,7 +7,7 @@ Content-Type: application/json
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
-    "bookAuthor": "Author Name"
+    "bookAuthor": "Book Author Name"
   }
 }
 

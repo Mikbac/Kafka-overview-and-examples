@@ -25,7 +25,7 @@ import static com.example.libraryproducer.service.KafkaEventUtil.buildProducerRe
 @RequiredArgsConstructor
 public class LibraryEventProducerService {
 
-    private static final String CUSTOM_TOPIC = "CustomTopic_library-events";
+    private static final String CUSTOM_TOPIC = "CustomTopic_library-books";
 
     private final KafkaTemplate<String, LibraryEventModel> kafkaTemplate;
 

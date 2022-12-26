@@ -55,3 +55,17 @@ Content-Type: application/json
   }
 }
 ```
+
+```http request
+PUT http://localhost:8080/v1/async/books
+Content-Type: application/json
+
+{
+  "libraryEventId": "1111-222-333",
+  "book": {
+    "bookId": 456,
+    "bookName": "Kafka Book2",
+    "bookAuthor": "Author Name"
+  }
+}
+```

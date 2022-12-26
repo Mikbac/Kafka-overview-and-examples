@@ -14,7 +14,7 @@ import static com.example.libraryproducer.configuration.KafkaConstants.KAFKA_LIB
 
 @Configuration
 @Profile("local")
-public class KafkaConfiguration {
+public class KafkaProducerConfiguration {
 
     @Bean
     public NewTopic libraryEvents() {

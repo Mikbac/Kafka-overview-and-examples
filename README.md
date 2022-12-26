@@ -1,8 +1,12 @@
 # Kafka demo
 
+## [Installation](./docs/Installation.md)
+
 ## [Theory](./docs/Theory.md)
 
-## [Installation](./docs/Installation.md)
+## [Producer](./docs/Producer.md)
+
+## [Consumer](./docs/Consumer.md)
 
 ## [Cluster](./docs/Cluster.md)
 

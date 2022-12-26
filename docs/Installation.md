@@ -37,8 +37,8 @@ docker compose -f ./docker/kraft-kouncil-cluster.yaml up
 | Service        | Endpoint              |
 |----------------|-----------------------|
 | Kafka broker-1 | http://localhost:9192 |
-| Kafka broker-2 | http://localhost:9293 |
-| Kafka broker-3 | http://localhost:9394 |
+| Kafka broker-2 | http://localhost:9292 |
+| Kafka broker-3 | http://localhost:9392 |
 | Kouncil UI     | http://localhost:9080 |
 
 **4. Run (with UI via proxy):**

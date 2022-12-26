@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class LibraryEventConsumerService {
+public class LibraryEventConsumerBatchOffsetService {
 
     @KafkaListener(
             topics = {"library-books"},

@@ -5,7 +5,6 @@ package com.example.libraryconsumer.model;
  */
 
 public enum LibraryEventType {
-
     NEW,
     UPDATE
 }

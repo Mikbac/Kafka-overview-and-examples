@@ -2,7 +2,6 @@ package com.example.libraryconsumer.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -13,7 +12,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.util.backoff.FixedBackOff;
 
 /**
  * Created by MikBac on 26.12.2022
@@ -27,6 +27,12 @@ public class KafkaConsumerConfiguration {
 
     private final KafkaProperties kafkaProperties;
 
+    public DefaultErrorHandler newErrorHandler() {
+        var fixedBackOff = new FixedBackOff(1000L, 2);
+
+        return new DefaultErrorHandler(fixedBackOff);
+    }
+
     @Bean
     @ConditionalOnMissingBean(name = "kafkaListenerContainerFactory")
     ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
@@ -38,7 +44,11 @@ public class KafkaConsumerConfiguration {
                 .getIfAvailable(() -> new DefaultKafkaConsumerFactory<>(this.kafkaProperties.buildConsumerProperties())));
 
         factory.setConcurrency(3);
-//        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+
+        // factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+
+        // Custom error handler
+        factory.setCommonErrorHandler(newErrorHandler());
         return factory;
     }
 }

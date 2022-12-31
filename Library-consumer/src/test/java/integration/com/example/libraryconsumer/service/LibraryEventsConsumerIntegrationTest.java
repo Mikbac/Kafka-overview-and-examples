@@ -178,8 +178,9 @@ class LibraryEventsConsumerIntegrationTest {
         countDownLatch.await(5, TimeUnit.SECONDS);
 
         // then
-        verify(libraryEventConsumerBatchOffsetServiceSpy, times(10)).onMessage(isA(ConsumerRecord.class));
-        verify(libraryEventsServiceSpy, times(10)).processLibraryEvent(isA(ConsumerRecord.class));
+        // number of invocations depends on "newErrorHandler()" in configuration
+        verify(libraryEventConsumerBatchOffsetServiceSpy, times(3)).onMessage(isA(ConsumerRecord.class));
+        verify(libraryEventsServiceSpy, times(3)).processLibraryEvent(isA(ConsumerRecord.class));
 
     }
 }

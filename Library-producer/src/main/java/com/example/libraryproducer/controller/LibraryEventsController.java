@@ -60,7 +60,7 @@ public class LibraryEventsController {
 
         libraryEvent.setLibraryEventType(LibraryEventType.NEW);
         final SendResult<String, LibraryEventModel> sendResult = libraryEventProducer.sendSyncLibraryEvent(libraryEvent);
-        log.info("SendResult is {}", sendResult.toString());
+        LOGGER.info("SendResult is {}", sendResult.toString());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(libraryEvent);
@@ -69,12 +69,12 @@ public class LibraryEventsController {
     @PutMapping("/v1/async/books")
     public ResponseEntity<?> putAsyncDefaultLibraryEvent(@RequestBody @Valid final LibraryEventModel libraryEvent) {
 
-        if(libraryEvent.getLibraryEventId()==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the LibraryEventId");
+        if(libraryEvent.getLibraryEventUUID()==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the libraryEventUUID");
         }
 
         libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
-        libraryEventProducer.sendDefaultKeyAsyncLibraryEvent(libraryEvent, libraryEvent.getLibraryEventId());
+        libraryEventProducer.sendDefaultKeyAsyncLibraryEvent(libraryEvent, libraryEvent.getLibraryEventUUID());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(libraryEvent);

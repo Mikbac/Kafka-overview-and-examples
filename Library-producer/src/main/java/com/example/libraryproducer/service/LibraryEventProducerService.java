@@ -29,9 +29,9 @@ public class LibraryEventProducerService {
 
     private final KafkaTemplate<String, LibraryEventModel> kafkaTemplate;
 
-    public void sendDefaultKeyAsyncLibraryEvent(final LibraryEventModel libraryEvent, final String libraryEventId) {
+    public void sendDefaultKeyAsyncLibraryEvent(final LibraryEventModel libraryEvent, final String libraryEventUUID) {
 
-        final String key = libraryEventId != null ? libraryEventId : UUID.randomUUID().toString();
+        final String key = libraryEventUUID != null ? libraryEventUUID : UUID.randomUUID().toString();
 
         // Uses default topic from configuration
         kafkaTemplate.sendDefault(key, libraryEvent).whenComplete((result, exception) -> {
@@ -91,12 +91,12 @@ public class LibraryEventProducerService {
     }
 
     private void handleFailure(final Throwable throwable) {
-        log.error("Error Sending the Message and the exception is {}", throwable.getMessage());
+        LOGGER.error("Error Sending the Message and the exception is {}", throwable.getMessage());
 
         try {
             throw throwable;
         } catch (final Throwable e) {
-            log.error("Error in OnFailure: {}", throwable.getMessage());
+            LOGGER.error("Error in OnFailure: {}", throwable.getMessage());
         }
 
     }
@@ -104,7 +104,7 @@ public class LibraryEventProducerService {
     private void handleSuccess(final String key,
                                final LibraryEventModel value,
                                final SendResult<String, LibraryEventModel> result) {
-        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}",
+        LOGGER.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}",
                 key,
                 value,
                 result.getRecordMetadata().partition());

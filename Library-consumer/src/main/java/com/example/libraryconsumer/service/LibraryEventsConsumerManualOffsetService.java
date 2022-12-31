@@ -24,7 +24,7 @@ public class LibraryEventsConsumerManualOffsetService implements AcknowledgingMe
     @Override
     @KafkaListener(topics = {"CustomTopic_library-books"})
     public void onMessage(final ConsumerRecord<String, LibraryEventModel> consumerRecord, final Acknowledgment acknowledgment) {
-        log.info("ConsumerRecord (Manual Offset Consumer) -> {} ", consumerRecord);
+        LOGGER.info("ConsumerRecord (Manual Offset Consumer) -> {} ", consumerRecord);
         acknowledgment.acknowledge();
     }
 }

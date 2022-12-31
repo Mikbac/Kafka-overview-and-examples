@@ -46,7 +46,7 @@ class LibraryEventsControllerTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId(null)
+                .libraryEventUUID(null)
                 .book(book)
                 .build();
         // when
@@ -72,7 +72,7 @@ class LibraryEventsControllerTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId(null)
+                .libraryEventUUID(null)
                 .book(book)
                 .build();
         // when
@@ -100,7 +100,7 @@ class LibraryEventsControllerTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId("111-222-333")
+                .libraryEventUUID("111-222-333")
                 .book(book)
                 .build();
         // when
@@ -126,7 +126,7 @@ class LibraryEventsControllerTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId(null)
+                .libraryEventUUID(null)
                 .book(book)
                 .build();
         // when

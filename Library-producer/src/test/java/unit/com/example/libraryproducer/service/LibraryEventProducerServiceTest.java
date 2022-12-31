@@ -50,7 +50,7 @@ class LibraryEventProducerServiceTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId(null)
+                .libraryEventUUID(null)
                 .book(book)
                 .build();
 
@@ -74,14 +74,14 @@ class LibraryEventProducerServiceTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId(null)
+                .libraryEventUUID(null)
                 .book(book)
                 .build();
 
         final String record = objectMapper.writeValueAsString(libraryEvent);
         final CompletableFuture completableFuture = new CompletableFuture();
 
-        final ProducerRecord<String, LibraryEventModel> producerRecord = new ProducerRecord("library-books", libraryEvent.getLibraryEventId(), record);
+        final ProducerRecord<String, LibraryEventModel> producerRecord = new ProducerRecord("library-books", libraryEvent.getLibraryEventUUID(), record);
         final RecordMetadata recordMetadata = new RecordMetadata(new TopicPartition("library-books", 3),
                 1, 1, System.currentTimeMillis(), 1, 2);
         final SendResult<String, LibraryEventModel> sendResult = new SendResult<>(producerRecord, recordMetadata);

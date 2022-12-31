@@ -25,7 +25,7 @@ public class ExceptionControllerAdvice {
                 .map(fieldError -> fieldError.getField() + " because: " + fieldError.getDefaultMessage())
                 .sorted()
                 .collect(Collectors.joining(", "));
-        log.info("errorMessage : {} ", errorMessage);
+        LOGGER.info("errorMessage : {} ", errorMessage);
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 

@@ -80,7 +80,7 @@ class LibraryEventsControllerIntegrationTest {
                 .build();
 
         final LibraryEventModel libraryEvent = LibraryEventModel.builder()
-                .libraryEventId(null)
+                .libraryEventUUID(null)
                 .book(book)
                 .build();
         final HttpHeaders headers = new HttpHeaders();
@@ -119,7 +119,7 @@ class LibraryEventsControllerIntegrationTest {
                 .build();
 
         final LibraryEventModel sentLibraryEvent = LibraryEventModel.builder()
-                .libraryEventId("111-222-333")
+                .libraryEventUUID("111-222-333")
                 .book(book)
                 .build();
         final HttpHeaders headers = new HttpHeaders();
@@ -135,7 +135,7 @@ class LibraryEventsControllerIntegrationTest {
         final ConsumerRecords<String, LibraryEventModel> consumerRecords = KafkaTestUtils.getRecords(consumer);
 
         final LibraryEventModel receivedLibraryEvent = LibraryEventModel.builder()
-                .libraryEventId("111-222-333")
+                .libraryEventUUID("111-222-333")
                 .libraryEventType(LibraryEventType.UPDATE)
                 .book(book)
                 .build();

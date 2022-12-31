@@ -5,7 +5,8 @@ POST http://localhost:8080/v1/async/books
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
+  "libraryEventUUID": "111-222",
   "book": {
     "bookId": 456,
     "bookName": "Kafka Using Spring Boot",
@@ -19,7 +20,8 @@ POST http://localhost:8080/v2/async/book
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
+  "libraryEventUUID": "111-222",
   "book": {
     "bookId": 456,
     "bookName": "Kafka Using Spring Boot",
@@ -33,7 +35,8 @@ POST http://localhost:8080/v3/async/book
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
+  "libraryEventUUID": "111-222",
   "book": {
     "bookId": 456,
     "bookName": "Kafka Using Spring Boot",
@@ -47,7 +50,8 @@ POST http://localhost:8080/v1/sync/books
 Content-Type: application/json
 
 {
-  "libraryEventId": 1,
+  "libraryEventId": null,
+  "libraryEventUUID": "111-222",
   "book": {
     "bookId": 456,
     "bookName": "Kafka Using Spring Boot",
@@ -61,7 +65,8 @@ PUT http://localhost:8080/v1/async/books
 Content-Type: application/json
 
 {
-  "libraryEventId": "1111-222-333",
+  "libraryEventId": 1,
+  "libraryEventUUID": "1111-222-333",
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",

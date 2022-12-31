@@ -4,6 +4,7 @@ Content-Type: application/json
 
 {
   "libraryEventId": null,
+  "libraryEventUUID": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
@@ -17,6 +18,7 @@ Content-Type: application/json
 
 {
   "libraryEventId": null,
+  "libraryEventUUID": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
@@ -30,6 +32,7 @@ Content-Type: application/json
 
 {
   "libraryEventId": null,
+  "libraryEventUUID": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",
@@ -44,6 +47,7 @@ Content-Type: application/json
 
 {
   "libraryEventId": null,
+  "libraryEventUUID": null,
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book",
@@ -57,7 +61,8 @@ PUT http://localhost:8080/v1/async/books
 Content-Type: application/json
 
 {
-  "libraryEventId": "1111-222-333",
+  "libraryEventId": "1",
+  "libraryEventUUID": "1111-222-333",
   "book": {
     "bookId": 456,
     "bookName": "Kafka Book2",

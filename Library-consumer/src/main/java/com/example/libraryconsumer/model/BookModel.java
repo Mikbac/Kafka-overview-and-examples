@@ -24,6 +24,6 @@ public class BookModel {
     private String bookName;
     private String bookAuthor;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "libraryEventId")
     private LibraryEventModel libraryEvent;
 }

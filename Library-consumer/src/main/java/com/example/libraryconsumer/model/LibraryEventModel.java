@@ -26,8 +26,8 @@ public class LibraryEventModel {
 
     @Id
     @GeneratedValue
-    private Integer id;
-    private String libraryEventId;
+    private Integer libraryEventId;
+    private String libraryEventUUID;
     @Enumerated(EnumType.STRING)
     private LibraryEventType libraryEventType;
     @OneToOne(mappedBy = "libraryEvent", cascade = {CascadeType.ALL})

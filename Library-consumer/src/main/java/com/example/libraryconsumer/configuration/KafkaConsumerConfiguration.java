@@ -1,6 +1,7 @@
 package com.example.libraryconsumer.configuration;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
@@ -15,22 +16,37 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.util.backoff.FixedBackOff;
 
+import java.util.List;
+
 /**
  * Created by MikBac on 26.12.2022
  */
 
 @Configuration
 @EnableKafka
-@Profile("local")
 @RequiredArgsConstructor
+@Slf4j
 public class KafkaConsumerConfiguration {
 
     private final KafkaProperties kafkaProperties;
 
     public DefaultErrorHandler newErrorHandler() {
+
         var fixedBackOff = new FixedBackOff(1000L, 2);
 
-        return new DefaultErrorHandler(fixedBackOff);
+        var errorHandler = new DefaultErrorHandler(fixedBackOff);
+
+        //  Add exception types to the default list
+        errorHandler.addNotRetryableExceptions(IllegalArgumentException.class);
+
+        errorHandler
+                .setRetryListeners((record, ex, deliveryAttempt) -> {
+                    LOGGER.info("Failed Record in Retry Listener  exception : {} , deliveryAttempt : {} ",
+                            ex.getMessage(),
+                            deliveryAttempt);
+                });
+
+        return errorHandler;
     }
 
     @Bean

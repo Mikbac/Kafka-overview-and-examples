@@ -5,6 +5,7 @@ import com.example.libraryconsumer.repository.LibraryEventsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,6 +39,10 @@ public class LibraryEventsService {
     }
 
     private void validate(LibraryEventModel libraryEvent) {
+
+        if (libraryEvent != null && libraryEvent.getLibraryEventUUID().isBlank()) {
+            throw new RecoverableDataAccessException("Access data issue.");
+        }
 
         Optional<LibraryEventModel> libraryEventOptional = libraryEventsRepository.findByLibraryEventUUID(libraryEvent.getLibraryEventUUID());
         if (!libraryEventOptional.isPresent()) {

@@ -164,7 +164,7 @@ class LibraryEventsConsumerIntegrationTest {
         libraryEventsRepository.save(libraryEvent);
 
         libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
-        libraryEvent.setLibraryEventUUID("123");
+        libraryEvent.setLibraryEventUUID(""); // makes RecoverableDataAccessException
         final BookModel newBook = BookModel.builder()
                 .bookId(2222)
                 .bookAuthor("Alice")

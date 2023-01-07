@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(topics = {"library-books"}, partitions = 3, value = 3)
 @TestPropertySource(properties = {"spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}"})
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class LibraryEventsControllerIntegrationTest {
 
     @Autowired

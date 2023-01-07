@@ -8,6 +8,8 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.ClassOrderer;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,15 +20,16 @@ import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -111,7 +114,7 @@ class LibraryEventsConsumerIntegrationTest {
     void publishUpdateLibraryEvent() throws ExecutionException, InterruptedException {
         // given
         final BookModel book = BookModel.builder()
-                .bookId(111)
+                .bookId(new Random().nextInt())
                 .bookAuthor("Bob")
                 .bookName("Kafka")
                 .build();
@@ -126,7 +129,7 @@ class LibraryEventsConsumerIntegrationTest {
 
         libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
         final BookModel newBook = BookModel.builder()
-                .bookId(2222)
+                .bookId(new Random().nextInt())
                 .bookAuthor("Alice")
                 .bookName("Kafka 3.0")
                 .build();
@@ -150,7 +153,7 @@ class LibraryEventsConsumerIntegrationTest {
     void publishUpdateLibraryEventWhenEventWithUUIDNotExists() throws ExecutionException, InterruptedException {
         // given
         final BookModel book = BookModel.builder()
-                .bookId(111)
+                .bookId(new Random().nextInt())
                 .bookAuthor("Bob")
                 .bookName("Kafka")
                 .build();
@@ -166,7 +169,7 @@ class LibraryEventsConsumerIntegrationTest {
         libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
         libraryEvent.setLibraryEventUUID(""); // makes RecoverableDataAccessException
         final BookModel newBook = BookModel.builder()
-                .bookId(2222)
+                .bookId(new Random().nextInt())
                 .bookAuthor("Alice")
                 .bookName("Kafka 3.0")
                 .build();

@@ -1,14 +1,23 @@
 # Kafka demo
 
-### [Installation](./docs/Installation.md)
+## Docs
 
-### [Theory](./docs/Theory.md)
+* [Installation](./docs/Installation.md)
 
-### [Producer](./docs/Producer.md)
+* [Theory](./docs/Theory.md)
 
-### [Consumer](./docs/Consumer.md)
+* [Producer](./docs/Producer.md)
 
-### [Cluster](./docs/Cluster.md)
+* [Consumer](./docs/Consumer.md)
+
+* [Cluster](./docs/Cluster.md)
+
+* [Recovery](./docs/Recovery.md)
+
+## Projects
+
+* [Library-consumer](Library-consumer) and [Library-producer](Library-producer)
+    Request: [Library.http](http%2FLibrary.http)
 
 -------------------------------------------------------------------
 

@@ -2,19 +2,24 @@ package com.example.libraryconsumer.configuration;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.ConsumerRecordRecoverer;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.ExponentialBackOffWithMaxRetries;
-import org.springframework.util.backoff.ExponentialBackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
 /**
@@ -27,7 +32,40 @@ import org.springframework.util.backoff.FixedBackOff;
 @Slf4j
 public class KafkaConsumerConfiguration {
 
+    @Value("${topics.retry:library-books.RETRY}")
+    private String retryTopic;
+
+    @Value("${topics.dlt:library-books.DLT}")
+    private String deadLetterTopic;
+
     private final KafkaProperties kafkaProperties;
+    private final KafkaTemplate kafkaTemplate;
+
+    // https://docs.spring.io/spring-kafka/reference/html/#dead-letters
+    public DeadLetterPublishingRecoverer publishingRecoverer() {
+
+        return new DeadLetterPublishingRecoverer(
+                kafkaTemplate, (consumerRecord, exception) -> {
+            LOGGER.error("Exception in publishingRecoverer : {} ", exception.getMessage(), exception);
+            if (exception.getCause() instanceof RecoverableDataAccessException) {
+                return new TopicPartition(retryTopic, consumerRecord.partition());
+            } else {
+                return new TopicPartition(deadLetterTopic, consumerRecord.partition());
+            }
+        }
+        );
+
+    }
+
+    ConsumerRecordRecoverer consumerRecordRecoverer = (record, exception) -> {
+        LOGGER.error("Exception is : {} Failed Record : {} ", exception, record);
+        if (exception.getCause() instanceof RecoverableDataAccessException) {
+            LOGGER.info("Inside the recoverable logic");
+            //Recovery Code here.
+        } else {
+            LOGGER.info("Inside the non recoverable logic and skipping the record : {}", record);
+        }
+    };
 
     public DefaultErrorHandler newErrorHandler() {
 
@@ -42,7 +80,11 @@ public class KafkaConsumerConfiguration {
 
         // BackOff strategy fixedBackOff|exponentialBackOff
         // var errorHandler = new DefaultErrorHandler(fixedBackOff);
-        var errorHandler = new DefaultErrorHandler(exponentialBackOff);
+        var errorHandler = new DefaultErrorHandler(
+                // consumerRecordRecoverer,
+                publishingRecoverer(),
+                exponentialBackOff
+        );
 
         /**
          By default, the following exceptions will not be retried:

@@ -114,5 +114,19 @@ Check replication:
 * Includes both leader and follower replica
 * Recommended value is always greater than 1
 * Ideal value is ISR == Replication Factor
-* This can be controlled by min.insync.replicas property
+* This can be controlled by `min.insync.replicas` property
 * It can be set at the broker or topic level
+
+## Producer Errors
+
+https://www.conduktor.io/kafka/kafka-topic-configuration-min-insync-replicas
+
+`min.insync.replicas` e.g.  `min.insync.replicas=2` this means that you have two replicas of the data that produced into
+the topic (if only one producer is available, it generates an error)
+
+`min.insync.replicas` default value is 1
+
+```
+In summary, when acks=all with a replication.factor=N and min.insync.replicas=M 
+we can tolerate N-M brokers going down for topic availability purposes.
+```

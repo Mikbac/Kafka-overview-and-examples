@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class LibraryEventsService {
 
     private void validate(LibraryEventModel libraryEvent) {
 
-        if (libraryEvent != null && libraryEvent.getLibraryEventUUID().isBlank()) {
+        if (libraryEvent != null && StringUtils.isEmpty(libraryEvent.getLibraryEventUUID())) {
             throw new RecoverableDataAccessException("Access data issue.");
         }
 

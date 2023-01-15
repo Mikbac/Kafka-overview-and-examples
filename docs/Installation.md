@@ -6,6 +6,8 @@
 
 https://hub.docker.com/r/bitnami/kafka
 
+Debug env: `- BITNAMI_DEBUG=true`
+
 **1. Run (without UI):**
 
 ```shell

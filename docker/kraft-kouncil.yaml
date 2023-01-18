@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     ports:
       - '9192:9092'
+    volumes:
+      - kafka-storage:/bitnami/kafka
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -33,5 +35,10 @@ services:
       - kafka-network
     depends_on:
       - kafka-bitnami
+
+volumes:
+  kafka-storage:
+    driver: local
+
 networks:
   kafka-network:

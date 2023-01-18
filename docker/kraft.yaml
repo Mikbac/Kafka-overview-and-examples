@@ -5,6 +5,8 @@ services:
     hostname: bitnami-kafka
     ports:
       - '9192:9092'
+    volumes:
+      - kafka-storage:/bitnami/kafka
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -17,6 +19,10 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     networks:
       - kafka-network
+
+volumes:
+  kafka-storage:
+    driver: local
 
 networks:
   kafka-network:

@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     ports:
       - '9192:9092'
+    volumes:
+      - kafka-storage-1:/bitnami/kafka
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -33,6 +35,8 @@ services:
     restart: unless-stopped
     ports:
       - '9292:9092'
+    volumes:
+      - kafka-storage-2:/bitnami/kafka
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -57,6 +61,8 @@ services:
     restart: unless-stopped
     ports:
       - '9392:9092'
+    volumes:
+      - kafka-storage-3:/bitnami/kafka
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -88,5 +94,14 @@ services:
       - kafka-broker-1
       - kafka-broker-2
       - kafka-broker-3
+
+volumes:
+  kafka-storage-1:
+    driver: local
+  kafka-storage-2:
+    driver: local
+  kafka-storage-3:
+    driver: local
+
 networks:
   kafka-network:

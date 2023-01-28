@@ -29,8 +29,19 @@ docker compose -f ./docker/kraft-kouncil.yaml up
 | Kafka broker | http://localhost:9192 |
 | Kouncil UI   | http://localhost:9080 |
 
+**3. Run (with UI and SSL):**
 
-**3. Run (with UI and three brokers):**
+```shell
+docker compose -f ./docker/kraft-kouncil-ssl.yaml up
+```
+
+| Service      | Endpoint                            |
+|--------------|-------------------------------------|
+| Kafka broker | http://localhost:9192 (with SSL)    |
+| Kouncil UI   | http://localhost:9080 (without SSL) |
+
+
+**4. Run (with UI and three brokers):**
 
 ```shell
 docker compose -f ./docker/kraft-kouncil-cluster.yaml up
@@ -43,7 +54,7 @@ docker compose -f ./docker/kraft-kouncil-cluster.yaml up
 | Kafka broker-3 | http://localhost:9392 |
 | Kouncil UI     | http://localhost:9080 |
 
-**4. Run (with UI via proxy):**
+**5. Run (with UI via proxy):**
 
 ```shell
 docker compose -f ./docker/kraft-kouncil-traefik.yaml up

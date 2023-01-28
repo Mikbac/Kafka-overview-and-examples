@@ -25,3 +25,11 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
+### Certs ###
+/docker/certs/ca-cert
+/docker/certs/ca-cert.srl
+/docker/certs/ca-key
+/docker/certs/cert-file
+/docker/certs/cert-signed
+*.jks

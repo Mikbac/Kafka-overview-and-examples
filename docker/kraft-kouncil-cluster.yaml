@@ -26,6 +26,7 @@ services:
     deploy:
       resources:
         limits:
+          cpus: "1"
           memory: 1g
     networks:
       - kafka-network
@@ -52,6 +53,7 @@ services:
     deploy:
       resources:
         limits:
+          cpus: "1"
           memory: 1g
     networks:
       - kafka-network
@@ -78,6 +80,7 @@ services:
     deploy:
       resources:
         limits:
+          cpus: "1"
           memory: 1g
     networks:
       - kafka-network
@@ -88,6 +91,11 @@ services:
       - '9080:8080'
     environment:
       - bootstrapServers=bitnami-kafka-1:9094
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
     networks:
       - kafka-network
     depends_on:

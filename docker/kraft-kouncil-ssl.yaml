@@ -25,6 +25,11 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CERTIFICATE_PASSWORD=password1
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1g
     networks:
       - kafka-network
   kouncil-ui:
@@ -34,6 +39,11 @@ services:
       - '9080:8080'
     environment:
       - bootstrapServers=bitnami-kafka:9094
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
     networks:
       - kafka-network
     depends_on:

@@ -27,6 +27,11 @@ services:
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1g
     networks:
       - kafka-network
   traefik-proxy:
@@ -41,6 +46,11 @@ services:
     ports:
       - "9082:80"
       - "9081:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
     networks:
       - kafka-network
     volumes:
@@ -61,6 +71,11 @@ services:
       - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[0].replacement=<base href=\"/kouncil-ui/\">"
       - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[1].regex=/api/"
       - "traefik.http.middlewares.kouncil_ui_rewrite.plugin.plugin-rewritebody.rewrites[1].replacement=/kouncil-ui/api/"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
     networks:
       - kafka-network
     depends_on:

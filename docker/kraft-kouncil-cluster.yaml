@@ -4,7 +4,7 @@
 version: "3.4"
 services:
   kafka-broker-1:
-    image: 'bitnami/kafka:3.3.1'
+    image: 'bitnami/kafka:3.4.0'
     hostname: bitnami-kafka-1
     restart: unless-stopped
     ports:
@@ -31,7 +31,7 @@ services:
     networks:
       - kafka-network
   kafka-broker-2:
-    image: 'bitnami/kafka:3.3.1'
+    image: 'bitnami/kafka:3.4.0'
     hostname: bitnami-kafka-2
     restart: unless-stopped
     ports:
@@ -58,7 +58,7 @@ services:
     networks:
       - kafka-network
   kafka-broker-3:
-    image: 'bitnami/kafka:3.3.1'
+    image: 'bitnami/kafka:3.4.0'
     hostname: bitnami-kafka-3
     restart: unless-stopped
     ports:

@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   kafka-bitnami:
-    image: 'bitnami/kafka:3.3.1'
+    image: 'bitnami/kafka:3.4.0'
     hostname: bitnami-kafka
     ports:
       - '9192:9092'

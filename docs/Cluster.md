@@ -57,7 +57,7 @@ Environment variables for Docker:
 
 ```properties
 KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka-1:9093,2@bitnami-kafka-2:9093
-KAFKA_BROKER_ID=1
+KAFKA_CFG_NODE_ID=1
 KAFKA_KRAFT_CLUSTER_ID=rwJnBJlxJUaYNBpgdpahcx
 # Optional
 KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false

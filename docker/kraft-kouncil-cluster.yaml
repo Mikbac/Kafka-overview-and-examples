@@ -21,7 +21,7 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://localhost:9192,INTERNAL://bitnami-kafka-1:9094
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka-1:9093,2@bitnami-kafka-2:9093,3@bitnami-kafka-3:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_NODE_ID=1
       - KAFKA_KRAFT_CLUSTER_ID=rwJnBJlxJUaYNBpgdpahcx
     deploy:
       resources:
@@ -48,7 +48,7 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://localhost:9292,INTERNAL://bitnami-kafka-2:9094
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka-1:9093,2@bitnami-kafka-2:9093,3@bitnami-kafka-3:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_BROKER_ID=2
+      - KAFKA_CFG_NODE_ID=2
       - KAFKA_KRAFT_CLUSTER_ID=rwJnBJlxJUaYNBpgdpahcx
     deploy:
       resources:
@@ -75,7 +75,7 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://localhost:9392,INTERNAL://bitnami-kafka-3:9094
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka-1:9093,2@bitnami-kafka-2:9093,3@bitnami-kafka-3:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_BROKER_ID=3
+      - KAFKA_CFG_NODE_ID=3
       - KAFKA_KRAFT_CLUSTER_ID=rwJnBJlxJUaYNBpgdpahcx
     deploy:
       resources:

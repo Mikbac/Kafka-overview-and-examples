@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Library-producer [PROD]" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="prod" />
-    <module name="Library-producer.main" />
+    <module name="com.example.Library-producer.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.libraryproducer.LibraryProducerApplication" />
     <method v="2">
       <option name="Make" enabled="true" />

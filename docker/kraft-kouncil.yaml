@@ -62,7 +62,7 @@ services:
     networks:
       - kafka-network
   kouncil-ui:
-    image: 'consdata/kouncil:1.7'
+    image: 'consdata/kouncil:1.9.1'
     restart: unless-stopped
     ports:
       - '9080:8080'

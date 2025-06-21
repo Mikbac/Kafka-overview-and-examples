@@ -10,6 +10,8 @@
 
 * [Consumer](./docs/Consumer.md)
 
+    * [Consumer-Lag.md](docs/Consumer-Lag.md)
+
 * [Cluster](./docs/Cluster.md)
 
 * [Recovery](./docs/Recovery.md)

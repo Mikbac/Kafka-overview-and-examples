@@ -1,59 +1,69 @@
 #
-# Created by MikBac on 11.12.2022
+# Created by MikBac on 30.08.2025
 #
 # Docs:
 #   * https://docs.confluent.io/platform/current/installation/configuration/broker-configs.html
-#   * https://github.com/bitnami/containers/blob/main/bitnami/kafka/README.md
-version: "3.4"
+#   * https://docs.confluent.io/platform/current/installation/docker/config-reference.html
+#   * https://akhq.io/
 services:
-  kafka-bitnami:
-    image: 'bitnami/kafka:3.7.0'
-    hostname: bitnami-kafka
+  kafka-confluent:
+    image: confluentinc/cp-kafka:7.9.2 # Apache Kafka 3.9
+    hostname: confluent-kafka
     restart: unless-stopped
     ports:
       - '9192:9092'
     volumes:
-      - kafka-storage:/bitnami/kafka
+      - kafka-storage:/var/lib/kafka/data
     environment:
+      # KRaft mode
       # Enable KRaft mode (instead of Zookeeper mode).
-      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_KRAFT_MODE=true
       # Comma-separated list of Kafka KRaft roles. Allowed values: "controller,broker", "controller", "broker".
-      - KAFKA_CFG_PROCESS_ROLES=broker,controller
-      # Name of internal listener. An internal broker used for communication between brokers.
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
-      # Name of controller listener.
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      # List of Kafka listeners. If node is set with controller role, the listener CONTROLLER must be included.
-      - KAFKA_CFG_LISTENERS=EXTERNAL://:9092,CONTROLLER://:9093,INTERNAL://:9094
-      # Maps each listener with Apache Kafka security protocol. Allowed values: PLAINTEXT, SSL, SASL_PLAINTEXT, SASL_SSL
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT
-      # Address map for external connection to Kafka.
-      # E.g. EXTERNAL is the external address and INTERNAL is the address available inside the docker network.
-      - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://localhost:9192,INTERNAL://bitnami-kafka:9094
+      - KAFKA_PROCESS_ROLES=broker,controller
       # Unique id for the Kafka node. It has to be an integer.
-      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_NODE_ID=1
       # Comma separated host:port pairs, each corresponding to a Kafka controller connection.
       # Pattern: <controller1_node_id>@<controller1_host>:9093
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@bitnami-kafka:9093
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@confluent-kafka:9093
+      # A string that specifies the unique identifier for the Replicator cluster
+      - CLUSTER_ID=rwJnBJlxJUaYNBpgdpahcx
+      # -----------
+      # Listeners & protocols
+      # List of Kafka listeners. If node is set with controller role, the listener CONTROLLER must be included.
+      - KAFKA_LISTENERS=EXTERNAL://:9092,CONTROLLER://:9093,INTERNAL://:9094
+      # Maps each listener with Apache Kafka security protocol. Allowed values: PLAINTEXT, SSL, SASL_PLAINTEXT, SASL_SSL
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT
+      # Address map for external connection to Kafka.
+      # E.g. EXTERNAL is the external address and INTERNAL is the address available inside the docker network.
+      - KAFKA_ADVERTISED_LISTENERS=EXTERNAL://localhost:9192,INTERNAL://confluent-kafka:9094
+      # Name of internal listener. An internal broker used for communication between brokers.
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      # Name of controller listener.
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      # -----------
+      # Broker configs
       # Log retention policy (e.g. 48 is 2 days retention).
       # Available log retentions policies:
       #   * KAFKA_CFG_LOG_RETENTION_HOURS
       #   * KAFKA_CFG_LOG_RETENTION_CHECK_INTERVAL_MS
       #   * KAFKA_CFG_LOG_RETENTION_BYTES
-      - KAFKA_CFG_LOG_RETENTION_HOURS=48
+      - KAFKA_LOG_RETENTION_HOURS=48
       # Default replication factors for automatically created topics.
-      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=1
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=1
       # The replication factor for the offsets topic (set higher to ensure availability).
-      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
       # The replication factor for the transaction topic (set higher to ensure availability).
-      - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
       # Automatically creates a topic when subscribing or assigning a non-existent topic.
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
       # Rack of the broker. This will be used in rack aware replication assignment for fault tolerance.
       # E.g. RACK1, us-east-1d
       # The Rack Awareness feature in Kafka spreads replicas of the same partition across different racks
       # to minimize data loss in the event of a rack failure.
-      - KAFKA_CFG_BROKER_RACK=zone-test
+      - KAFKA_BROKER_RACK=zone-test
+      # -----------
+      # Storage dir
+      - KAFKA_LOG_DIRS=/var/lib/kafka/data
     deploy:
       resources:
         limits:
@@ -61,13 +71,18 @@ services:
           memory: 1g
     networks:
       - kafka-network
-  kouncil-ui:
-    image: 'consdata/kouncil:1.9.1'
+  akhq-ui:
+    image: tchiotludo/akhq:0.26.0
     restart: unless-stopped
     ports:
       - '9080:8080'
     environment:
-      - bootstrapServers=bitnami-kafka:9094
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            kafka-cluster:
+              properties:
+                bootstrap.servers: "confluent-kafka:9094"
     deploy:
       resources:
         limits:
@@ -76,7 +91,7 @@ services:
     networks:
       - kafka-network
     depends_on:
-      - kafka-bitnami
+      - kafka-confluent
 
 volumes:
   kafka-storage:

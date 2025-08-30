@@ -27,13 +27,16 @@
 * [Library-consumer](Library-consumer) and [Library-producer](Library-producer)
   Request: [Library.http](http/Library.http)
 
-* Docker compose files:
-    * [kraft.yaml](docker/kraft.yaml) - basic Kafka (3.4.0) example
-    * [kraft-kouncil.yaml](docker/kraft-kouncil.yaml) - **(UPDATED)** Kafka (**3.7.0**) and Kouncil (**1.7**) -
+* Docker compose files (confluentinc image):
+    *  [kraft-akhq.yaml](docker/confluentinc-kafka/kraft-akhq.yaml) - Apache Kafka (**3.9**) and Akhq (**0.26.0**)
+
+* Docker compose files (bitnami image):
+    * [kraft.yaml](docker/bitnami-kafka/kraft.yaml) - basic Kafka (3.4.0) example
+    * [kraft-kouncil.yaml](docker/bitnami-kafka/kraft-kouncil.yaml) - **(UPDATED)** Kafka (**3.7.0**) and Kouncil (**1.7**) -
       additional configuration descriptions inside the docker compose file
-    * [kraft-kouncil-cluster.yaml](docker/kraft-kouncil-cluster.yaml) - three Kafka (3.4.0) instances and Kouncil (1.4)
-    * [kraft-kouncil-ssl.yaml](docker/kraft-kouncil-ssl.yaml) - single Kafka (3.4.0) instance with ssl and Kouncil (1.4)
-    * [kraft-kouncil-traefik.yaml](docker/kraft-kouncil-traefik.yaml) - single Kafka (3.4.0) instance with Traefik
+    * [kraft-kouncil-cluster.yaml](docker/bitnami-kafka/kraft-kouncil-cluster.yaml) - three Kafka (3.4.0) instances and Kouncil (1.4)
+    * [kraft-kouncil-ssl.yaml](docker/bitnami-kafka/kraft-kouncil-ssl.yaml) - single Kafka (3.4.0) instance with ssl and Kouncil (1.4)
+    * [kraft-kouncil-traefik.yaml](docker/bitnami-kafka/kraft-kouncil-traefik.yaml) - single Kafka (3.4.0) instance with Traefik
       proxy (v3.0) and Kouncil (1.4)
 
 -------------------------------------------------------------------

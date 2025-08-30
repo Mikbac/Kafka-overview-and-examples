@@ -27,9 +27,9 @@ out/
 !**/src/test/**/out/
 
 ### Certs ###
-/docker/certs/ca-cert
-/docker/certs/ca-cert.srl
-/docker/certs/ca-key
-/docker/certs/cert-file
-/docker/certs/cert-signed
+/docker/bitnami-kafka/certs/ca-cert
+/docker/bitnami-kafka/certs/ca-cert.srl
+/docker/bitnami-kafka/certs/ca-key
+/docker/bitnami-kafka/certs/cert-file
+/docker/bitnami-kafka/certs/cert-signed
 *.jks

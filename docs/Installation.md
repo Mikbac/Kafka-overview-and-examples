@@ -2,7 +2,20 @@
 
 ## Docker
 
-### Docker - without Zookeeper
+### Docker (confluentinc image) - without Zookeeper
+
+**1. Run (with UI):**
+
+```shell
+docker compose -f ./docker/confluentinc-kafka/kraft-akhq.yaml up
+```
+
+| Service      | Endpoint              |
+|--------------|-----------------------|
+| Kafka broker | http://localhost:9192 |
+| Akhq UI      | http://localhost:9080 |
+
+### Docker (bitnami image) - without Zookeeper
 
 https://hub.docker.com/r/bitnami/kafka
 
@@ -11,7 +24,7 @@ Debug env: `- BITNAMI_DEBUG=true`
 **1. Run (without UI):**
 
 ```shell
-docker compose -f ./docker/kraft.yaml up
+docker compose -f ./docker/bitnami-kafka/kraft.yaml up
 ```
 
 | Service      | Endpoint              |
@@ -21,7 +34,7 @@ docker compose -f ./docker/kraft.yaml up
 **2. Run (with UI):**
 
 ```shell
-docker compose -f ./docker/kraft-kouncil.yaml up
+docker compose -f ./docker/bitnami-kafka/kraft-kouncil.yaml up
 ```
 
 | Service      | Endpoint              |
@@ -32,7 +45,7 @@ docker compose -f ./docker/kraft-kouncil.yaml up
 **3. Run (with UI and SSL):**
 
 ```shell
-docker compose -f ./docker/kraft-kouncil-ssl.yaml up
+docker compose -f ./docker/bitnami-kafka/kraft-kouncil-ssl.yaml up
 ```
 
 | Service      | Endpoint                            |
@@ -40,11 +53,10 @@ docker compose -f ./docker/kraft-kouncil-ssl.yaml up
 | Kafka broker | http://localhost:9192 (with SSL)    |
 | Kouncil UI   | http://localhost:9080 (without SSL) |
 
-
 **4. Run (with UI and three brokers):**
 
 ```shell
-docker compose -f ./docker/kraft-kouncil-cluster.yaml up
+docker compose -f ./docker/bitnami-kafka/kraft-kouncil-cluster.yaml up
 ```
 
 | Service        | Endpoint              |
@@ -57,7 +69,7 @@ docker compose -f ./docker/kraft-kouncil-cluster.yaml up
 **5. Run (with UI via proxy):**
 
 ```shell
-docker compose -f ./docker/kraft-kouncil-traefik.yaml up
+docker compose -f ./docker/bitnami-kafka/kraft-kouncil-traefik.yaml up
 ```
 
 | Service           | Endpoint                           |
